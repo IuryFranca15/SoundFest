@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SoundFest V3 — seu festival, seu som</title>
+<style>
+:root{--bg:#09051b;--panel:#160b2b;--pink:#f05adf;--cyan:#53d7e8;--gold:#ffd45c;--muted:#b8accb;--white:#fff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#32104b 0,#0b061c 50%,#070411 100%);color:var(--white);font-family:Inter,Arial,sans-serif}
+header{text-align:center;padding:28px 16px 18px}.brand{font:italic 900 clamp(2.8rem,7vw,4.7rem) Georgia,serif;letter-spacing:-3px}.eyebrow{color:var(--pink);font-size:.76rem;font-weight:900;letter-spacing:3px;margin-top:3px}
+main{max-width:1180px;margin:auto;padding:0 18px 60px}.panel{background:linear-gradient(145deg,#1a1032ee,#100a22ee);border:1px solid #ffffff1b;border-radius:18px;padding:22px;margin:15px 0;box-shadow:0 15px 45px #0005}
+h2{font-size:1.02rem;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 15px;color:var(--cyan)}label{display:block;color:#d8cde6;font-size:.83rem;font-weight:700;margin-bottom:7px}
+input,select{width:100%;background:#090616;color:#fff;border:1px solid #ffffff30;border-radius:9px;padding:12px;font-size:.95rem;min-height:45px}input:focus,select:focus{outline:1px solid var(--pink)}
+.controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end}.options{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}button{border:0;border-radius:9px;padding:12px 16px;font-weight:900;cursor:pointer;background:var(--pink);color:#17071d}button:hover{filter:brightness(1.1)}button:disabled{opacity:.55;cursor:wait}button.secondary{background:#33224e;color:#fff;border:1px solid #ffffff24}button.gold{background:var(--gold);color:#201329}
+#status{font-size:.84rem;color:var(--muted);margin-top:12px;min-height:22px;line-height:1.5}.status-good{color:#7be6bb!important}.status-warn{color:var(--gold)!important}.small{font-size:.78rem;color:var(--muted);line-height:1.5}
+.manual-box{display:flex;flex-wrap:wrap;gap:6px;background:#090616;border:1px solid #ffffff2b;border-radius:9px;padding:8px;min-height:45px}.genre-chip{font-size:.74rem;font-weight:800;padding:6px 9px;border-radius:6px;background:#23153d;color:#d8cde6;border:1px solid #ffffff1a;cursor:pointer}.genre-chip.active{background:var(--pink);color:#17071d;border-color:var(--pink)}
+.two{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.hidden{display:none}.genre-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.genre-card{background:#0d081d;border:1px solid #ffffff18;border-radius:12px;padding:15px}.genre-card h3{font-size:.95rem;color:var(--pink);margin:0}.genre-card ol{padding-left:22px;margin:10px 0 0;columns:2;column-gap:22px}.genre-card li{font-size:.77rem;line-height:1.7;break-inside:avoid;color:#e7deef}.tag{font-size:.58rem;border-radius:4px;padding:2px 5px;margin-left:4px;white-space:nowrap;font-weight:800}.mine{background:#164a45;color:#91f4d2}.new{background:#38204c;color:#e6aaff}
+.poster-wrap{display:flex;justify-content:center;padding:12px 0}.poster{width:min(100%,700px);min-height:790px;position:relative;overflow:hidden;padding:26px 30px 155px;text-align:center;background:linear-gradient(180deg,#10052c 0%,#210943 55%,#6d1b78 100%);box-shadow:0 20px 60px #0009;border:1px solid #ffffff24}
+.poster:before{content:"";position:absolute;inset:auto 0 0;height:190px;background:linear-gradient(0deg,#080319,transparent);pointer-events:none}.poster .logo{font:italic 900 3.2rem Georgia,serif;letter-spacing:-3px}.presented{font-size:.72rem;font-weight:900;letter-spacing:2px;color:#ff69df;margin:4px 0 20px}
+.poster-title{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:1000;line-height:.95;letter-spacing:-2px;text-transform:uppercase;margin:0 0 8px;overflow-wrap:anywhere}.poster-meta{font-size:.7rem;letter-spacing:2px;color:#f5c5fa;font-weight:900;margin-bottom:18px}
+.day{position:relative;margin:17px auto 22px;max-width:590px;padding-top:10px;border-top:1px solid #ffffff20}.day:first-child{border-top:0;padding-top:0}.day-head{display:flex;justify-content:space-between;color:#ff70e4;font-weight:1000;font-size:.8rem;letter-spacing:2px;margin-bottom:5px}.stage-title{font-size:.58rem;color:#f3a7ee;letter-spacing:2px;font-weight:900;margin-top:9px}.headliner{font-size:clamp(1.55rem,4.8vw,2.6rem);font-weight:1000;line-height:1.04;text-transform:uppercase}.subline{font-weight:900;font-size:clamp(.78rem,2vw,1.05rem);line-height:1.4;text-transform:uppercase;margin-top:4px}.subline span{color:#f15cde;padding:0 3px}.tinyline{font-size:clamp(.65rem,1.5vw,.85rem);font-weight:800;line-height:1.45;text-transform:uppercase;color:#eee4f7;margin-top:3px}
+.skyline{position:absolute;bottom:0;left:0;width:100%;height:145px;display:flex;align-items:end;justify-content:space-around;pointer-events:none}.building{background:#100522;border-top:3px solid #d62dbb;position:relative;width:7%;height:var(--h)}.building:after{content:"";position:absolute;inset:12px 5px;background:repeating-linear-gradient(90deg,#e65cd5 0 2px,transparent 2px 9px),repeating-linear-gradient(0deg,transparent 0 12px,#e65cd555 12px 14px)}.sun{position:absolute;bottom:75px;left:14%;width:62px;height:62px;border-radius:50%;background:#ffcf58;box-shadow:0 0 45px #ff9e47}.moon{position:absolute;bottom:95px;right:15%;font-size:3.4rem}.poster-footer{position:absolute;bottom:13px;left:0;right:0;font-size:.56rem;letter-spacing:2px;color:#d4b5e5;font-weight:800}
+@media(max-width:760px){.controls,.options{grid-template-columns:1fr 1fr}.controls>div:first-child,.options>div:last-child{grid-column:1/-1}.genre-grid{grid-template-columns:1fr}.poster{padding:22px 13px 140px;min-height:750px}.genre-card ol{columns:1}.panel{padding:17px}}
+@media print{body{background:white}.no-print,header{display:none!important}.poster-wrap{padding:0}.poster{width:100%;min-height:100vh;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header><div class="brand">SoundFest</div><div class="eyebrow">SEU GOSTO MUSICAL. SEU FESTIVAL.</div></header>
+<main>
+<section class="panel no-print">
+<h2>01 / Conecte seu Last.fm</h2>
+<div class="controls">
+ <div><label for="username">Usuário do Last.fm</label><input id="username" placeholder="ex.: almikiwi" autocomplete="username"></div>
+ <div><label for="format">Formato do festival</label><select id="format"><option value="mix">Mix de gêneros</option><option value="heavy">Metal & Stoner</option><option value="indie">Indie & Post-Punk</option><option value="pop">Pop & Alternativo</option><option value="manual">Seleção manual</option></select></div>
+ <div><label for="mode">Modo de curadoria</label><select id="mode"><option value="balanced">Equilibrado (Seu perfil + Descobertas)</option><option value="mineOnly">Só artistas do meu perfil</option><option value="discover">Só descobertas</option><option value="random">Aleatório</option></select></div>
+</div>
+<div class="options">
+ <div><label for="days">Dias de festival</label><select id="days"><option value="3">3 dias</option><option value="2">2 dias</option><option value="1">1 dia</option></select></div>
+ <div><label for="stages">Palcos</label><select id="stages"><option value="3">3 palcos</option><option value="2">2 palcos</option><option value="1" selected>1 palco</option></select></div>
+ <div><label for="perstage">Artistas por palco/dia</label><select id="perstage"><option value="5">5 atrações</option><option value="6">6 atrações</option><option value="8" selected>8 atrações</option><option value="10">10 atrações</option></select></div>
+ <div><label>Gêneros (clique para alternar no manual)</label><div class="manual-box" id="manualGenres"></div></div>
+</div>
+<div class="actions"><button id="load">Buscar meu perfil</button><button class="secondary" id="generate">Gerar lineup</button><button class="gold" id="shuffle">Embaralhar lineup</button><button class="secondary" id="copy">Copiar lineup em texto</button><button class="secondary" id="print">Imprimir / salvar PDF</button></div>
+<div id="status" role="status" aria-live="polite">Inicializando o SoundFest…</div>
+<p class="small">O username fica salvo neste navegador. O perfil do Last.fm precisa estar público. A chave da API está no código deste protótipo; em publicação, mova-a para uma função backend.</p>
+</section>
+<section class="panel no-print">
+<div class="two"><div><h2>02 / Gêneros e artistas</h2><p class="small">As listas têm 30 artistas por gênero. Correspondências com seu histórico recebem o selo “NO SEU PERFIL”.</p></div><button class="secondary" id="toggleGenres">Mostrar listas</button></div>
+<div id="genreArea" class="hidden"><div class="genre-grid" id="genreGrid"></div><div class="two" style="margin-top:16px"><div><label for="newGenre">Adicionar gênero personalizado</label><input id="newGenre" placeholder="Ex.: Shoegaze"></div><button class="secondary" id="addGenre">Adicionar lista</button></div><p class="small">Informe exatamente 30 artistas separados por vírgula.</p></div>
+</section>
+<section class="panel"><h2>03 / Seu cartaz</h2><div class="poster-wrap"><div class="poster" id="poster">
+<div class="logo">SoundFest</div><div class="presented">CURADORIA PERSONALIZADA</div><div class="poster-title" id="festivalName">SEU FESTIVAL</div><div class="poster-meta" id="posterMeta">LINEUP GERADO A PARTIR DO SEU LAST.FM</div><div id="lineupDays"></div>
+<div class="sun"></div><div class="moon">☾</div><div class="skyline"><div class="building" style="--h:50px"></div><div class="building" style="--h:78px"></div><div class="building" style="--h:61px"></div><div class="building" style="--h:100px"></div><div class="building" style="--h:72px"></div><div class="building" style="--h:116px"></div><div class="building" style="--h:83px"></div><div class="building" style="--h:63px"></div><div class="building" style="--h:94px"></div><div class="building" style="--h:55px"></div></div>
+<div class="poster-footer">FEITO COM SEU HISTÓRICO MUSICAL · SOUNDFEST V3</div></div></div></section>
+</main>
+<script>
+"use strict";
+const LASTFM_API_KEY = "ea5a8845dabb9a40d4c180820cf0c97b";
+const base = {
+"Indie Rock":["The Strokes","Arctic Monkeys","Interpol","Franz Ferdinand","Vampire Weekend","Phoenix","Bloc Party","Two Door Cinema Club","Foster the People","Cage the Elephant","The Killers","Yeah Yeah Yeahs","Modest Mouse","Pavement","Pixies","The National","Arcade Fire","Death Cab for Cutie","MGMT","Tame Impala","Mac DeMarco","Beach House","Alvvays","Mitski","Spoon","Car Seat Headrest","Parcels","Geese","Foals","Bombay Bicycle Club"],
+"Pop":["Lady Gaga","Charli XCX","Taylor Swift","Dua Lipa","Ariana Grande","Billie Eilish","Lana Del Rey","Lorde","Carly Rae Jepsen","Marina","Chappell Roan","Sabrina Carpenter","Olivia Rodrigo","Magdalena Bay","Caroline Polachek","Rina Sawayama","Troye Sivan","Bruno Mars","The Weeknd","Harry Styles","Beyoncé","Rihanna","Katy Perry","Kylie Minogue","Robyn","Grimes","FKA twigs","Rosalía","Doja Cat","SZA"],
+"Metal":["Metallica","Black Sabbath","Iron Maiden","Judas Priest","Megadeth","Slayer","Pantera","Sepultura","System of a Down","Tool","Deftones","Slipknot","Gojira","Mastodon","Opeth","Meshuggah","Lamb of God","Avenged Sevenfold","Trivium","Korn","Alice in Chains","Motörhead","Dio","Anthrax","Testament","Death","Cannibal Corpse","Behemoth","Ghost","Spiritbox"],
+"Stoner Rock":["Queens of the Stone Age","Kyuss","Sleep","Electric Wizard","Fu Manchu","Truckfighters","Monster Magnet","Clutch","Red Fang","Uncle Acid & the Deadbeats","The Sword","Baroness","Melvins","High on Fire","Orange Goblin","Corrosion of Conformity","Elder","All Them Witches","Kadavar","Graveyard","Witchcraft","Nebula","Brant Bjork","Slo Burn","Unida","Hermano","Dozer","Lowrider","Stoned Jesus","Bongzilla"],
+"Post-Punk":["Joy Division","The Cure","Bauhaus","Siouxsie and the Banshees","Talking Heads","Television","Gang of Four","Wire","Echo & the Bunnymen","The Smiths","Depeche Mode","New Order","Killing Joke","Public Image Ltd.","The Sisters of Mercy","The Chameleons","Cocteau Twins","Molchat Doma","Fontaines D.C.","IDLES","Shame","Squid","Black Country, New Road","Viagra Boys","Dry Cleaning","Protomartyr","Preoccupations","Parquet Courts","Lebanon Hanover","She Past Away"]
+};
+let genres=structuredClone(base),activeManual=new Set(Object.keys(base)),listened=new Set(),artistRank=new Map(),loaded=false,lastLineup=[];
+const $=id=>document.getElementById(id);
+const norm=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function status(msg,kind=""){ $("status").textContent=msg;$("status").className=kind; }
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function refreshGenres(){
+ $("manualGenres").innerHTML=Object.keys(genres).map(g=>`<span class="genre-chip ${activeManual.has(g)?"active":""}" data-g="${esc(g)}">${esc(g)}</span>`).join("");
+ $("manualGenres").querySelectorAll("[data-g]").forEach(el=>el.addEventListener("click",()=>{const g=el.dataset.g;activeManual.has(g)?activeManual.delete(g):activeManual.add(g);$("format").value="manual";refreshGenres();generate();}));
+ $("genreGrid").innerHTML=Object.entries(genres).map(([g,arr])=>`<article class="genre-card"><h3>${esc(g)} · ${arr.length} artistas</h3><ol>${arr.map(a=>`<li>${esc(a)} ${listened.has(norm(a))?'<span class="tag mine">NO SEU PERFIL</span>':'<span class="tag new">DESCOBERTA</span>'}</li>`).join("")}</ol></article>`).join("");
+}
+function selectedGenres(){const f=$("format").value;if(f==="heavy")return ["Metal","Stoner Rock"].filter(g=>genres[g]);if(f==="indie")return ["Indie Rock","Post-Punk"].filter(g=>genres[g]);if(f==="pop")return ["Pop","Indie Rock","Post-Punk"].filter(g=>genres[g]);if(f==="manual")return [...activeManual].filter(g=>genres[g]);return Object.keys(genres);}
+function buildLineup(){
+ const gs=selectedGenres();if(!gs.length)throw new Error("Selecione pelo menos um gênero.");
+ let pool=gs.flatMap(g=>genres[g].map(name=>({name,genre:g,mine:listened.has(norm(name)),rank:artistRank.has(norm(name))?artistRank.get(norm(name)):999999})));
+ pool=pool.filter((a,i)=>pool.findIndex(x=>norm(x.name)===norm(a.name))===i);
+ const mode=$("mode").value;
+ if(mode==="mineOnly")pool=pool.filter(a=>a.mine);
+ if(mode==="discover")pool=pool.filter(a=>!a.mine);
+ if(!pool.length)throw new Error(mode==="mineOnly"?"Nenhum artista das listas foi encontrado no seu perfil. Tente o modo equilibrado.":"Não há artistas para essa seleção.");
+ const days=+$("days").value,stages=+$("stages").value,per=+$("perstage").value,slots=days*stages*per;
+ let selected=[];
+ if(mode==="balanced"&&loaded){
+   let fav=pool.filter(a=>a.mine).sort((a,b)=>a.rank-b.rank),fresh=shuffle(pool.filter(a=>!a.mine));
+   // Alterna favoritos e descobertas; favoritos mais ouvidos entram primeiro.
+   while(selected.length<slots&&(fav.length||fresh.length)){
+     if(fav.length)selected.push(fav.shift());
+     if(fresh.length&&selected.length<slots)selected.push(fresh.shift());
+   }
+ }else if(mode==="random")selected=shuffle(pool).slice(0,slots);
+ else selected=pool.slice().sort((a,b)=>a.rank-b.rank).slice(0,slots);
+ // Distribui sem repetir e ordena cada palco para que o artista mais popular seja o headliner.
+ const buckets=Array.from({length:days*stages},()=>[]);
+ selected.forEach((a,i)=>buckets[i%buckets.length].push(a));
+ lastLineup=[];
+ for(let d=0;d<days;d++){const dayStages=[];for(let s=0;s<stages;s++){const acts=buckets[d*stages+s].sort((a,b)=>a.rank-b.rank);if(acts.length)dayStages.push({stage:["PALCO PRINCIPAL","PALCO ALTERNATIVO","PALCO UNDERGROUND"][s]||`PALCO ${s+1}`,acts});}if(dayStages.length)lastLineup.push({day:d+1,stages:dayStages});}
+ renderPoster();
+ return selected.length;
+}
+function generate(){try{const n=buildLineup();status(`Lineup gerado com ${n} atrações. Nenhum artista se repete.`, "status-good");}catch(e){status(e.message,"status-warn");}}
+function renderPoster(){
+ const user=$("username").value.trim();$("festivalName").textContent=(user?`${user.toUpperCase()} FEST`:"SOUNDFEST").slice(0,25);
+ const n=lastLineup.reduce((sum,d)=>sum+d.stages.reduce((v,s)=>v+s.acts.length,0),0);
+ $("posterMeta").textContent=`${lastLineup.length} ${lastLineup.length===1?"DIA":"DIAS"} · ${n} ATRAÇÕES · ${loaded?"BASEADO NO LAST.FM":"CURADORIA LOCAL"}`;
+ $("lineupDays").innerHTML=lastLineup.map(d=>`<div class="day"><div class="day-head"><span>DIA ${String(d.day).padStart(2,"0")}</span><span>${["SEX","SÁB","DOM"][(d.day-1)%3]}</span></div>${d.stages.map(st=>{const a=st.acts;if(!a.length)return "";const head=a[0],mid=a.slice(1,Math.max(1,a.length-2)),open=a.slice(Math.max(1,a.length-2));return `<div class="stage-title">${esc(st.stage)}</div><div class="headliner">★ ${esc(head.name)}</div>${mid.length?`<div class="subline">◆ ${mid.map(x=>esc(x.name)).join(' <span>•</span> ')}</div>`:""}${open.length?`<div class="tinyline">● ${open.map(x=>esc(x.name)).join(" • ")}</div>`:""}`;}).join("")}</div>`).join("");
+}
+function jsonp(url,timeout=12000){return new Promise((resolve,reject)=>{const cb="soundfest_cb_"+Math.random().toString(36).slice(2);const script=document.createElement("script");let timer=setTimeout(()=>{clean();reject(new Error("A API não respondeu no tempo esperado."));},timeout);function clean(){clearTimeout(timer);delete window[cb];script.remove();}window[cb]=payload=>{clean();resolve(payload);};script.onerror=()=>{clean();reject(new Error("O navegador bloqueou a conexão JSONP com o Last.fm."));};script.src=url+"&callback="+cb;document.head.appendChild(script);});}
+async function fetchProfile(){
+ const user=$("username").value.trim();if(!user){status("Digite seu username do Last.fm.","status-warn");$("username").focus();return;}
+ const btn=$("load");btn.disabled=true;status(`Consultando os 250 artistas mais ouvidos de @${user}…`);
+ try{
+  const q=new URLSearchParams({method:"user.getTopArtists",user,api_key:LASTFM_API_KEY,format:"json",limit:"250",period:"overall"});
+  const endpoint="https://ws.audioscrobbler.com/2.0/?"+q.toString();
+  let payload;
+  try{payload=await jsonp(endpoint);}catch(jsonpError){
+    // Fallback opcional: proxy CORS retorna JSON comum.
+    let last=jsonpError;
+    for(const url of [`https://api.allorigins.win/raw?url=${encodeURIComponent(endpoint)}`,`https://corsproxy.io/?url=${encodeURIComponent(endpoint)}`]){
+      try{const r=await fetch(url,{signal:AbortSignal.timeout(12000)});if(!r.ok)throw new Error("HTTP "+r.status);payload=await r.json();break;}catch(e){last=e;}
+    }
+    if(!payload)throw last;
+  }
+  if(payload?.error)throw new Error(`Last.fm (${payload.error}): ${payload.message||"não foi possível consultar o perfil."}`);
+  let artists=payload?.topartists?.artist;
+  if(artists&&!Array.isArray(artists))artists=[artists];
+  if(!Array.isArray(artists)||!artists.length)throw new Error("Nenhum artista retornado. Confira se o username existe e se o perfil é público.");
+  listened.clear();artistRank.clear();
+  artists.forEach((a,i)=>{const k=norm(a.name);if(k&&!listened.has(k)){listened.add(k);artistRank.set(k,i);}});
+  loaded=true;
+  try{localStorage.setItem("soundfest_username",user);}catch(e){}
+  refreshGenres();
+  const matches=Object.values(genres).flat().filter(a=>listened.has(norm(a))).length;
+  status(`Perfil @${user} carregado: ${listened.size} artistas lidos; ${matches} correspondem às listas do SoundFest.`,"status-good");
+  generate();
+ }catch(e){loaded=false;listened.clear();artistRank.clear();refreshGenres();status(`Falha ao consultar @${user}: ${e.message} O gerador local continua disponível.`, "status-warn");}
+ finally{btn.disabled=false;}
+}
+function lineupText(){return "SOUNDFEST V3 — "+$("festivalName").textContent+"\n\n"+lastLineup.map(d=>`DIA ${d.day}\n`+d.stages.map(s=>s.stage+":\n"+s.acts.map((a,i)=>`${i===0?"★ ":"• "}${a.name}${a.mine?" [NO PERFIL]":""}`).join("\n")).join("\n\n")).join("\n\n");}
+function init(){
+ try{const saved=localStorage.getItem("soundfest_username");if(saved)$("username").value=saved;}catch(e){}
+ $("load").addEventListener("click",fetchProfile);
+ $("username").addEventListener("keydown",e=>{if(e.key==="Enter")fetchProfile();});
+ $("generate").addEventListener("click",generate);
+ $("shuffle").addEventListener("click",()=>{const mode=$("mode").value;$("mode").value="random";generate();$("mode").value=mode;});
+ $("print").addEventListener("click",()=>window.print());
+ $("format").addEventListener("change",generate);$("mode").addEventListener("change",generate);
+ ["days","stages","perstage"].forEach(id=>$(id).addEventListener("change",generate));
+ $("toggleGenres").addEventListener("click",()=>{$("genreArea").classList.toggle("hidden");$("toggleGenres").textContent=$("genreArea").classList.contains("hidden")?"Mostrar listas":"Ocultar listas";});
+ $("addGenre").addEventListener("click",()=>{const name=$("newGenre").value.trim();if(!name)return status("Digite o nome do gênero.","status-warn");if(genres[name])return status("Esse gênero já existe.","status-warn");const raw=prompt("Cole exatamente 30 artistas separados por vírgula:");if(!raw)return;const arr=raw.split(",").map(x=>x.trim()).filter(Boolean);if(arr.length!==30)return status(`A lista precisa ter 30 nomes; você informou ${arr.length}.`,"status-warn");genres[name]=arr;activeManual.add(name);refreshGenres();$("newGenre").value="";status(`Gênero ${name} adicionado.`,"status-good");generate();});
+ $("copy").addEventListener("click",async()=>{if(!lastLineup.length)return status("Gere um lineup antes de copiar.","status-warn");try{await navigator.clipboard.writeText(lineupText());status("Lineup copiado.","status-good");}catch(e){status("A cópia automática foi bloqueada pelo navegador. Tente abrir em localhost ou usar a impressão/PDF.","status-warn");}});
+ refreshGenres();generate();status("Pronto! Você já pode gerar um lineup local ou buscar seu perfil do Last.fm.","status-good");
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+</script>
+</body></html>
